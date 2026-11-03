@@ -1,0 +1,1328 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Toko selempang wisuda elegan dengan tema biru dan putih. Temukan koleksi selempang wisuda premium untuk momen bersejarahmu."
+    />
+    <meta name="theme-color" content="#1565c0" />
+    <title>Wisuda Sash Store — Selempang Wisuda Elegan</title>
+
+    <style>
+      /* =========================================================
+         CSS CUSTOM PROPERTIES — Design Tokens
+         ========================================================= */
+      :root {
+        /* Warna utama */
+        --color-primary:       #1565c0;   /* Biru sedang — warna brand utama */
+        --color-primary-dark:  #1a237e;   /* Biru tua — untuk header/footer */
+        --color-primary-light: #42a5f5;   /* Biru muda — aksen */
+        --color-accent:        #ffd700;   /* Emas — highlight CTA */
+        --color-white:         #ffffff;
+        --color-text:          #212121;   /* Teks utama */
+        --color-text-light:    #f5f5f5;   /* Teks di atas background gelap */
+
+        /* Tipografi */
+        --font-family:    'Segoe UI', system-ui, sans-serif;
+        --font-size-base: 16px;
+        --font-size-lg:   1.25rem;
+        --font-size-xl:   2rem;
+        --font-size-xxl:  3rem;
+
+        /* Spacing */
+        --spacing-sm: 0.5rem;
+        --spacing-md: 1rem;
+        --spacing-lg: 2rem;
+        --spacing-xl: 4rem;
+
+        /* Animasi */
+        --animation-swing: 800ms;
+        --animation-color: 500ms;
+        --animation-hover: 300ms;
+        --cycle-interval:  2000ms;
+
+        /* Layout */
+        --container-max: 1200px;
+        --border-radius: 8px;
+      }
+
+      /* =========================================================
+         CSS RESET — Minimal
+         ========================================================= */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Smooth scrolling pada seluruh halaman */
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 70px; /* Offset fixed header (64px) + sedikit ruang */
+        font-size: var(--font-size-base);
+      }
+
+      body {
+        font-family: var(--font-family);
+        color: var(--color-text);
+        background-color: var(--color-white);
+        line-height: 1.6;
+        min-width: 320px;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* Reset list styles */
+      ul,
+      ol {
+        list-style: none;
+      }
+
+      /* Reset link styles */
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      /* Reset button styles */
+      button {
+        cursor: pointer;
+        border: none;
+        background: none;
+        font-family: inherit;
+        font-size: inherit;
+      }
+
+      /* Responsive images */
+      img,
+      svg {
+        display: block;
+        max-width: 100%;
+      }
+
+      /* =========================================================
+         BASE STYLES
+         ========================================================= */
+
+      /* Container utility */
+      .container {
+        width: 100%;
+        max-width: var(--container-max);
+        margin-inline: auto;
+        padding-inline: var(--spacing-lg);
+      }
+
+      /* Focus visible — aksesibilitas keyboard */
+      :focus-visible {
+        outline: 3px solid var(--color-accent);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+
+      /* Reduced motion — aksesibilitas */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+
+        html {
+          scroll-behavior: auto;
+        }
+      }
+
+      /* =========================================================
+         HEADER & NAVIGATION
+         ========================================================= */
+
+      /* Header — fixed di atas, full-width */
+      .site-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background-color: var(--color-primary-dark); /* #1a237e */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+      }
+
+      /* Inner wrapper — flex row, spasi logo ↔ nav */
+      .nav-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 64px;
+        gap: var(--spacing-md);
+      }
+
+      /* --- Logo --- */
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        color: var(--color-white);
+        font-size: var(--font-size-lg);
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        white-space: nowrap;
+        text-decoration: none;
+      }
+
+      .nav-logo:hover,
+      .nav-logo:focus-visible {
+        color: var(--color-accent);
+      }
+
+      .nav-logo svg {
+        flex-shrink: 0;
+        /* Override the global svg rule so inline SVG can be inline-block */
+        display: inline-block;
+      }
+
+      /* --- Nav list --- */
+      .nav-menu {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-lg);
+        /* Reset list style already done globally */
+      }
+
+      .nav-menu a {
+        color: var(--color-text-light); /* #f5f5f5 → contrast > 4.5:1 on #1a237e */
+        font-size: 0.95rem;
+        font-weight: 500;
+        padding: var(--spacing-sm) 0;
+        position: relative;
+        transition: color var(--animation-hover) ease;
+      }
+
+      /* Underline hover effect via pseudo-element */
+      .nav-menu a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--color-accent);
+        transition: width var(--animation-hover) ease;
+      }
+
+      .nav-menu a:hover,
+      .nav-menu a:focus-visible {
+        color: var(--color-accent);
+      }
+
+      .nav-menu a:hover::after,
+      .nav-menu a:focus-visible::after {
+        width: 100%;
+      }
+
+      /* --- CTA Button "Pesan Sekarang" --- */
+      /* Gold (#ffd700) background + dark text (#212121) → contrast ratio ≈ 9.5:1 ✓ WCAG AA */
+      .btn-cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--color-accent);   /* #ffd700 */
+        color: var(--color-text);                /* #212121 */
+        font-size: 0.9rem;
+        font-weight: 700;
+        padding: 0.5rem 1.25rem;
+        border-radius: var(--border-radius);
+        white-space: nowrap;
+        transition:
+          background-color var(--animation-hover) ease,
+          transform var(--animation-hover) ease,
+          box-shadow var(--animation-hover) ease;
+        text-decoration: none;
+      }
+
+      .btn-cta:hover,
+      .btn-cta:focus-visible {
+        background-color: #e6c200; /* slightly darker gold for hover */
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 215, 0, 0.45);
+        color: var(--color-text);
+      }
+
+      /* --- Hamburger button — mobile only --- */
+      .nav-toggle {
+        display: none;           /* hidden on desktop */
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        color: var(--color-white);
+        font-size: 1.5rem;
+        border-radius: 4px;
+        transition: background-color var(--animation-hover) ease;
+      }
+
+      .nav-toggle:hover,
+      .nav-toggle:focus-visible {
+        background-color: rgba(255, 255, 255, 0.15);
+        color: var(--color-accent);
+      }
+
+      /* --- Responsive: mobile (< 768px) --- */
+      @media (max-width: 767px) {
+        /* Show hamburger */
+        .nav-toggle {
+          display: flex;
+        }
+
+        /* Stack nav links vertically, hide by default */
+        .nav-menu {
+          display: none;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0;
+          position: absolute;
+          top: 64px;             /* below the 64px header */
+          left: 0;
+          right: 0;
+          background-color: var(--color-primary-dark);
+          padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-md);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* When toggled open (JS adds .is-open in Task 2.2) */
+        .nav-menu.is-open {
+          display: flex;
+        }
+
+        .nav-menu a {
+          padding: 0.75rem 0;
+          width: 100%;
+        }
+
+        /* Keep CTA inside menu on mobile */
+        .nav-menu .btn-cta {
+          margin-top: var(--spacing-sm);
+          width: 100%;
+          justify-content: center;
+        }
+      }
+
+      /* =========================================================
+         BODY OFFSET — push main content below fixed header
+         ========================================================= */
+      body {
+        padding-top: 64px;
+      }
+
+      /* =========================================================
+         HERO SECTION
+         ========================================================= */
+
+      #hero {
+        min-height: calc(100vh - 64px);
+        background: linear-gradient(135deg, #e3f2fd 0%, #ffffff 55%, #e8eaf6 100%);
+        display: flex;
+        align-items: center;
+      }
+
+      .hero__inner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-xl);
+        align-items: center;
+        padding-block: var(--spacing-xl);
+      }
+
+      /* ---- Left column: text ---- */
+      .hero__text {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-lg);
+      }
+
+      #hero-title {
+        font-size: var(--font-size-xxl);
+        font-weight: 800;
+        line-height: 1.15;
+        color: var(--color-primary-dark);
+        letter-spacing: -0.5px;
+      }
+
+      .hero__tagline {
+        font-size: var(--font-size-lg);
+        color: #424242;
+        max-width: 46ch;
+        line-height: 1.65;
+      }
+
+      /* Hero CTA — blue button (distinct from nav gold .btn-cta) */
+      .btn-cta--hero {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        align-self: flex-start;
+        padding: 0.85rem 2rem;
+        background-color: var(--color-primary);
+        color: var(--color-white);
+        font-size: 1rem;
+        font-weight: 700;
+        border-radius: var(--border-radius);
+        white-space: nowrap;
+        text-decoration: none;
+        transition:
+          background-color var(--animation-hover) ease,
+          transform var(--animation-hover) ease,
+          box-shadow var(--animation-hover) ease;
+        box-shadow: 0 4px 14px rgba(21, 101, 192, 0.35);
+      }
+
+      .btn-cta--hero:hover,
+      .btn-cta--hero:focus-visible {
+        background-color: var(--color-primary-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(21, 101, 192, 0.45);
+        color: var(--color-white);
+      }
+
+      .btn-cta--hero:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 8px rgba(21, 101, 192, 0.3);
+      }
+
+      /* ---- Right column: sash visual ---- */
+      .hero__visual {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-md);
+      }
+
+      #sash-display {
+        cursor: pointer;
+        width: 200px;
+        height: 400px;
+        background-color: var(--color-primary-dark);
+        border-radius: 12px;
+        box-shadow:
+          0 8px 32px rgba(26, 35, 126, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        transform: rotate(-20deg) skewY(4deg);
+        transform-origin: top center;
+        transition: background-color var(--animation-color) ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Decorative pinstripe overlay */
+      #sash-display::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.08) 0px,
+          rgba(255, 255, 255, 0.08) 2px,
+          transparent 2px,
+          transparent 24px
+        );
+        border-radius: inherit;
+        pointer-events: none;
+      }
+
+      /* Sheen highlight */
+      #sash-display::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -60%;
+        width: 40%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.18),
+          transparent
+        );
+        border-radius: inherit;
+        pointer-events: none;
+      }
+
+      /* Swing keyframes — used by MotionAnimator (Task 5) via .swinging class */
+      @keyframes swingEffect {
+        0%   { transform: rotate(-20deg) skewY(4deg) translateY(0); }
+        20%  { transform: rotate(-6deg)  skewY(4deg) translateY(-12px); }
+        40%  { transform: rotate(-28deg) skewY(4deg) translateY(8px); }
+        60%  { transform: rotate(-12deg) skewY(4deg) translateY(-6px); }
+        80%  { transform: rotate(-22deg) skewY(4deg) translateY(3px); }
+        100% { transform: rotate(-20deg) skewY(4deg) translateY(0); }
+      }
+
+      /* .swinging class — added/removed by MotionAnimator (Task 5) */
+      #sash-display.swinging {
+        animation: swingEffect var(--animation-swing) ease-in-out forwards;
+      }
+
+      /* =========================================================
+         PRODUCTS SECTION
+         ========================================================= */
+
+      #products {
+        padding-block: var(--spacing-xl);
+        background-color: var(--color-white);
+      }
+
+      #products-title {
+        text-align: center;
+        font-size: var(--font-size-xl);
+        font-weight: 800;
+        color: var(--color-primary-dark);
+        margin-bottom: var(--spacing-lg);
+        letter-spacing: -0.3px;
+      }
+
+      .products-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-lg);
+      }
+
+      /* Tablet: 2 columns */
+      @media (max-width: 1023px) {
+        .products-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      /* Mobile: 1 column */
+      @media (max-width: 767px) {
+        .products-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .product-card {
+        background-color: var(--color-white);
+        border-radius: var(--border-radius);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition:
+          transform 250ms ease,
+          box-shadow 250ms ease;
+      }
+
+      .product-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+      }
+
+      .product-sash-preview {
+        height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .product-card h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--color-primary-dark);
+        padding: var(--spacing-md) var(--spacing-md) var(--spacing-sm);
+      }
+
+      .product-card p {
+        padding: 0 var(--spacing-md) var(--spacing-sm);
+        color: #616161;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .product-price {
+        padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md) !important;
+        font-weight: 700 !important;
+        color: var(--color-primary) !important;
+        font-size: 1rem !important;
+      }
+
+      .btn-order {
+        display: block;
+        width: calc(100% - 2 * var(--spacing-md));
+        margin: 0 var(--spacing-md) var(--spacing-md);
+        background-color: var(--color-primary);
+        color: var(--color-white);
+        font-weight: 700;
+        font-size: 0.95rem;
+        padding: 0.65rem 1rem;
+        border-radius: var(--border-radius);
+        text-align: center;
+        transition:
+          background-color var(--animation-hover) ease,
+          transform var(--animation-hover) ease;
+      }
+
+      .btn-order:hover,
+      .btn-order:focus-visible {
+        background-color: var(--color-primary-dark);
+        transform: translateY(-2px);
+        color: var(--color-white);
+      }
+
+      .btn-order:active {
+        transform: translateY(0);
+      }
+
+      .click-hint {
+        font-size: 0.875rem;
+        color: #616161;
+        text-align: center;
+        font-style: italic;
+        letter-spacing: 0.01em;
+        margin-top: 1.5rem;
+      }
+
+      /* =========================================================
+         CONTACT SECTION
+         ========================================================= */
+      #contact {
+        padding-block: var(--spacing-xl);
+        background: linear-gradient(180deg, #e3f2fd 0%, #ffffff 100%);
+      }
+      #contact-title {
+        text-align: center;
+        font-size: var(--font-size-xl);
+        font-weight: 800;
+        color: var(--color-primary-dark);
+        margin-bottom: var(--spacing-sm);
+      }
+      .contact-subtitle {
+        text-align: center;
+        color: #616161;
+        margin-bottom: var(--spacing-lg);
+      }
+      .contact-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-lg);
+      }
+      @media (max-width: 767px) {
+        .contact-grid { grid-template-columns: 1fr; }
+      }
+      .contact-card {
+        background: var(--color-white);
+        border-radius: var(--border-radius);
+        box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+        padding: var(--spacing-lg);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-sm);
+      }
+      .contact-icon { font-size: 2.5rem; line-height: 1; }
+      .contact-card h3 { font-size: 1.1rem; font-weight: 700; color: var(--color-primary-dark); }
+      .contact-card p { color: #616161; font-size: 0.9rem; }
+      .btn-whatsapp {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #25d366;
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 0.9rem;
+        padding: 0.6rem 1.4rem;
+        border-radius: var(--border-radius);
+        text-decoration: none;
+        margin-top: var(--spacing-sm);
+        transition: background-color var(--animation-hover) ease, transform var(--animation-hover) ease;
+      }
+      .btn-whatsapp:hover, .btn-whatsapp:focus-visible {
+        background-color: #1ebe5d;
+        transform: translateY(-2px);
+        color: #ffffff;
+      }
+      .btn-contact-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--color-primary);
+        color: var(--color-white);
+        font-weight: 700;
+        font-size: 0.9rem;
+        padding: 0.6rem 1.4rem;
+        border-radius: var(--border-radius);
+        text-decoration: none;
+        margin-top: var(--spacing-sm);
+        transition: background-color var(--animation-hover) ease, transform var(--animation-hover) ease;
+      }
+      .btn-contact-secondary:hover, .btn-contact-secondary:focus-visible {
+        background-color: var(--color-primary-dark);
+        transform: translateY(-2px);
+        color: var(--color-white);
+      }
+      .social-links {
+        display: flex;
+        gap: var(--spacing-sm);
+        margin-top: var(--spacing-sm);
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .social-links a {
+        background-color: var(--color-primary-light);
+        color: var(--color-primary-dark);
+        font-weight: 600;
+        font-size: 0.85rem;
+        padding: 0.4rem 0.9rem;
+        border-radius: 20px;
+        text-decoration: none;
+        transition: background-color var(--animation-hover) ease;
+      }
+      .social-links a:hover, .social-links a:focus-visible {
+        background-color: var(--color-primary);
+        color: var(--color-white);
+      }
+
+      /* =========================================================
+         FOOTER
+         ========================================================= */
+      #footer {
+        background-color: var(--color-primary-dark);
+        color: var(--color-text-light);
+        padding-block: var(--spacing-lg);
+      }
+      .footer-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: var(--spacing-md);
+      }
+      .footer-brand strong {
+        font-size: 1.1rem;
+        display: block;
+        margin-bottom: var(--spacing-sm);
+      }
+      .footer-brand p {
+        font-size: 0.875rem;
+        color: rgba(245,245,245,0.75);
+        max-width: 40ch;
+      }
+      .footer-copyright p {
+        font-size: 0.8rem;
+        color: rgba(245,245,245,0.55);
+      }
+
+      /* ---- Hero responsive ---- */
+
+      @media (max-width: 1023px) {
+        .hero__inner {
+          gap: var(--spacing-lg);
+        }
+
+        #hero-title {
+          font-size: 2.25rem;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .hero__inner {
+          grid-template-columns: 1fr;
+          text-align: center;
+          padding-block: var(--spacing-lg);
+          gap: var(--spacing-lg);
+        }
+
+        #hero-title {
+          font-size: 2rem;
+        }
+
+        .hero__tagline {
+          max-width: 100%;
+        }
+
+        .btn-cta--hero {
+          align-self: center;
+        }
+
+        #sash-display {
+          width: 160px;
+          height: 320px;
+        }
+      }
+
+      /* =========================================================
+         RESPONSIVE — Breakpoint tambahan
+         ========================================================= */
+
+      /* Tablet: contact grid → 2 kolom agar tidak terlalu sempit
+         (3 kolom pada ~768px = ~240px per kartu; 2 kolom lebih nyaman) */
+      @media (max-width: 1023px) {
+        .contact-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      /* Mobile: contact grid → 1 kolom (sudah ditangani di blok 767px di atas,
+         tetapi deklarasikan ulang di sini untuk kejelasan cascade) */
+      @media (max-width: 767px) {
+        .contact-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Very small screens (≤ 480px): kurangi padding container agar 320px
+         tidak overflow. --spacing-lg (2rem = 32px) × 2 sisi = 64px dipakai
+         untuk padding; ganti ke --spacing-md (1rem = 16px) → 32px padding
+         total → 288px usable width pada viewport 320px. */
+      @media (max-width: 480px) {
+        .container {
+          padding-inline: var(--spacing-md);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- =====================================================
+         HEADER — Navigasi Utama (fixed/sticky)
+         ===================================================== -->
+    <header id="header" class="site-header" role="banner">
+      <nav class="container nav-wrapper" aria-label="Navigasi utama">
+
+        <!-- Logo: ikon selempang SVG + nama toko -->
+        <a href="#hero" class="nav-logo" aria-label="Wisuda Sash Store — kembali ke beranda">
+          <!-- SVG ikon selempang wisuda inline -->
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 32 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <!-- Pita selempang diagonal -->
+            <path
+              d="M4 28 L28 4"
+              stroke="#ffd700"
+              stroke-width="5"
+              stroke-linecap="round"
+            />
+            <!-- Lipatan ujung atas-kanan -->
+            <path
+              d="M22 4 L28 4 L28 10"
+              stroke="#ffd700"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              fill="none"
+            />
+            <!-- Lipatan ujung bawah-kiri -->
+            <path
+              d="M10 28 L4 28 L4 22"
+              stroke="#ffd700"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              fill="none"
+            />
+            <!-- Bintang kecil di tengah pita -->
+            <circle cx="16" cy="16" r="2.5" fill="#ffffff" />
+          </svg>
+          Selempang Wisuda
+        </a>
+
+        <!-- Hamburger toggle — visible only on mobile, JS logic in Task 2.2 -->
+        <button
+          class="nav-toggle"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+          aria-controls="nav-menu"
+          type="button"
+        >
+          ☰
+        </button>
+
+        <!-- Navigation links + CTA -->
+        <ul id="nav-menu" class="nav-menu" role="list">
+          <li><a href="#hero">Beranda</a></li>
+          <li><a href="#products">Produk</a></li>
+          <li><a href="#about">Tentang</a></li>
+          <li><a href="#contact">Kontak</a></li>
+          <li>
+            <a href="#contact" class="btn-cta">Pesan Sekarang</a>
+          </li>
+        </ul>
+
+      </nav>
+    </header>
+
+    <!-- =====================================================
+         MAIN — Konten Utama
+         ===================================================== -->
+    <main id="main-content" role="main">
+
+      <!-- Hero Section — Tampilan produk unggulan -->
+      <section id="hero" aria-labelledby="hero-title">
+
+        <div class="container hero__inner">
+
+          <!-- Left column: store info + CTA -->
+          <div class="hero__text">
+            <h1 id="hero-title">Selempang Wisuda Premium</h1>
+            <p class="hero__tagline">
+              Koleksi selempang wisuda elegan berkualitas premium. Tampil istimewa di hari bersejarahmu dengan pilihan warna terbaik.
+            </p>
+            <a href="#products" class="btn-cta--hero">Lihat Koleksi</a>
+          </div>
+
+          <!-- Right column: animated sash visual -->
+          <div class="hero__visual">
+            <div
+              id="sash-display"
+              role="img"
+              aria-label="Selempang wisuda animasi interaktif"
+              tabindex="0"
+            >
+              <!-- SVG dekorasi di dalam selempang: bintang & teks wisuda -->
+              <svg
+                viewBox="0 0 200 400"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                focusable="false"
+                style="width:100%;height:100%;position:absolute;inset:0;"
+              >
+                <!-- Garis dekoratif horizontal -->
+                <line x1="20" y1="60"  x2="180" y2="60"  stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+                <line x1="20" y1="340" x2="180" y2="340" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+                <!-- Bintang besar di tengah -->
+                <text
+                  x="100" y="185"
+                  text-anchor="middle"
+                  dominant-baseline="middle"
+                  font-size="52"
+                  fill="rgba(255,255,255,0.55)"
+                >★</text>
+                <!-- Teks "WISUDA" vertikal -->
+                <text
+                  x="100" y="230"
+                  text-anchor="middle"
+                  dominant-baseline="middle"
+                  font-size="18"
+                  font-weight="700"
+                  letter-spacing="4"
+                  fill="rgba(255,255,255,0.7)"
+                  font-family="'Segoe UI', system-ui, sans-serif"
+                >WISUDA</text>
+              </svg>
+            </div>
+
+            <p class="click-hint">Klik selempang untuk animasi!</p>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- Products Section — Galeri produk selempang -->
+      <section id="products" aria-labelledby="products-title">
+        <!-- Product gallery akan diisi di Task 7 -->
+      </section>
+
+      <!-- About Section — Tentang toko -->
+      <section id="about" aria-labelledby="about-title">
+        <div class="container" style="padding-block: var(--spacing-xl); text-align: center;">
+          <h2 id="about-title" style="font-size: var(--font-size-xl); color: var(--color-primary-dark); margin-bottom: var(--spacing-md);">Tentang Kami</h2>
+          <p style="max-width: 60ch; margin-inline: auto; color: #424242; line-height: 1.8;">
+            Selempang Wisuda Premium adalah toko online terpercaya yang menyediakan koleksi selempang wisuda berkualitas tinggi. 
+            Kami berkomitmen menghadirkan produk terbaik untuk menemani momen bersejarah Anda dengan harga yang terjangkau.
+          </p>
+        </div>
+      </section>
+
+      <!-- Contact Section — Kontak dan pemesanan -->
+      <section id="contact" aria-labelledby="contact-title">
+        <div class="container">
+          <h2 id="contact-title">Hubungi Kami</h2>
+          <p class="contact-subtitle">Siap membantu kamu tampil istimewa di hari wisuda</p>
+          <div class="contact-grid">
+            <!-- WhatsApp -->
+            <div class="contact-card">
+              <div class="contact-icon">📱</div>
+              <h3>WhatsApp</h3>
+              <p>+62 812-3456-7890</p>
+              <a href="https://wa.me/6281234567890?text=Halo%2C%20saya%20ingin%20memesan%20selempang%20wisuda.%20Mohon%20informasi%20lebih%20lanjut."
+                 class="btn-whatsapp"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 aria-label="Chat WhatsApp untuk memesan selempang wisuda">
+                Chat WhatsApp
+              </a>
+            </div>
+            <!-- Email -->
+            <div class="contact-card">
+              <div class="contact-icon">✉️</div>
+              <h3>Email</h3>
+              <p>toko@selempangwisuda.com</p>
+              <a href="mailto:toko@selempangwisuda.com" class="btn-contact-secondary">Kirim Email</a>
+            </div>
+            <!-- Social Media -->
+            <div class="contact-card">
+              <div class="contact-icon">📸</div>
+              <h3>Media Sosial</h3>
+              <p>@selempangwisuda</p>
+              <div class="social-links">
+                <a href="https://instagram.com/selempangwisuda" target="_blank" rel="noopener noreferrer" aria-label="Instagram Selempang Wisuda">Instagram</a>
+                <a href="https://tiktok.com/@selempangwisuda" target="_blank" rel="noopener noreferrer" aria-label="TikTok Selempang Wisuda">TikTok</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- =====================================================
+         FOOTER — Informasi toko dan hak cipta
+         ===================================================== -->
+    <footer id="footer" role="contentinfo">
+      <div class="container footer-inner">
+        <div class="footer-brand">
+          <strong>Selempang Wisuda Premium</strong>
+          <p>Koleksi selempang wisuda berkualitas premium untuk momen bersejarahmu.</p>
+        </div>
+        <div class="footer-copyright">
+          <p id="footer-year"></p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- =====================================================
+         JAVASCRIPT — Modul-modul inline
+         ===================================================== -->
+    <script>
+      // ColorAnimator, MotionAnimator, dan UI Interactions
+      // akan diimplementasikan di Task 4, 5, dan 9
+
+      // =========================================================
+      // MODULE: ColorAnimator
+      // Mengelola animasi siklus warna otomatis pada #sash-display.
+      // Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6
+      // =========================================================
+      const colorAnimator = {
+        colors: ['#1a237e', '#1565c0', '#42a5f5', '#ffd700', '#c62828'],
+        currentIndex: 0,
+        intervalId: null,
+        isPaused: false,
+        element: null,
+
+        /**
+         * Mulai color cycling pada elemen target.
+         * Jika prefers-reduced-motion aktif, hanya terapkan warna pertama tanpa interval.
+         * Requirements: 3.1, 3.6
+         * @param {HTMLElement} el
+         */
+        init(el) {
+          this.element = el;
+          this.currentIndex = 0;
+          this.setColor(0);
+          const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (reducedMotion) return;
+          this.intervalId = setInterval(() => this.advance(), 2000);
+        },
+
+        /**
+         * Geser currentIndex ke warna berikutnya (wraps around) lalu terapkan.
+         * Requirements: 3.1
+         */
+        advance() {
+          this.currentIndex = (this.currentIndex + 1) % this.colors.length;
+          this.setColor(this.currentIndex);
+        },
+
+        /**
+         * Terapkan warna pada indeks `index` ke elemen.
+         * CSS transition 500ms sudah terpasang di stylesheet (#sash-display).
+         * Requirements: 3.3
+         * @param {number} index
+         */
+        setColor(index) {
+          if (this.element) {
+            this.element.style.backgroundColor = this.colors[index];
+          }
+        },
+
+        /**
+         * Jeda animasi saat hover masuk; simpan currentIndex.
+         * Requirements: 3.4
+         */
+        pause() {
+          if (this.intervalId) {
+            clearInterval(this.intervalId);
+            this.intervalId = null;
+          }
+          this.isPaused = true;
+        },
+
+        /**
+         * Lanjutkan animasi dari currentIndex terakhir.
+         * Requirements: 3.5
+         */
+        resume() {
+          if (!this.isPaused) return;
+          this.isPaused = false;
+          const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (reducedMotion) return;
+          if (!this.intervalId) {
+            this.intervalId = setInterval(() => this.advance(), 2000);
+          }
+        },
+
+        /**
+         * Bersihkan interval — dipanggil saat visibilitychange (tab tersembunyi).
+         */
+        destroy() {
+          if (this.intervalId) {
+            clearInterval(this.intervalId);
+            this.intervalId = null;
+          }
+        }
+      };
+
+      // =========================================================
+      // MODULE: MotionAnimator
+      // Mengelola animasi ayunan (swing) pada #sash-display saat diklik.
+      // Requirements: 2.1, 2.2, 2.3, 2.4, 2.5
+      // =========================================================
+      const motionAnimator = {
+        isAnimating: false,
+        element: null,
+
+        /**
+         * Daftarkan event listener click dan animationend pada elemen target.
+         * Requirements: 2.1
+         * @param {HTMLElement} el
+         */
+        init(el) {
+          this.element = el;
+          el.addEventListener('click', () => this.triggerSwing());
+          el.addEventListener('animationend', () => this.onAnimationEnd());
+        },
+
+        /**
+         * Mulai animasi swing jika tidak sedang berjalan.
+         * Deteksi prefers-reduced-motion: jika aktif, hanya ubah opacity sesaat.
+         * Requirements: 2.2, 2.3, 2.4, 2.5
+         */
+        triggerSwing() {
+          if (this.isAnimating) return;
+          const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (reducedMotion) {
+            // Aksesibilitas: brief opacity change sebagai pengganti animasi
+            if (this.element) {
+              this.element.style.opacity = '0.7';
+              setTimeout(() => { this.element.style.opacity = '1'; }, 200);
+            }
+            return;
+          }
+          this.isAnimating = true;
+          if (this.element) {
+            this.element.classList.add('swinging');
+          }
+        },
+
+        /**
+         * Callback saat animasi selesai: hapus class .swinging dan reset flag.
+         * Requirements: 2.2, 2.3
+         */
+        onAnimationEnd() {
+          this.isAnimating = false;
+          if (this.element) {
+            this.element.classList.remove('swinging');
+          }
+        }
+      };
+
+      // =========================================================
+      // SMOOTH SCROLL HELPER
+      // =========================================================
+      /**
+       * Smooth-scrolls to a section by its id.
+       * Used by buttons that cannot use an <a href="#id"> directly.
+       * @param {string} sectionId - The id of the target section (without #)
+       */
+      function scrollToSection(sectionId) {
+        var target = document.getElementById(sectionId);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+
+      // =========================================================
+      // PRODUCT DATA — Requirements 4.1, 4.2
+      // =========================================================
+      /** @type {Array<{id:string, name:string, description:string, price:string, color:string, imageAlt:string}>} */
+      const PRODUCTS = [
+        { id: "sash-001", name: "Selempang Biru Royal",    description: "Selempang wisuda elegan warna biru royal premium",       price: "Rp 75.000", color: "#1a237e", imageAlt: "Selempang wisuda warna biru royal" },
+        { id: "sash-002", name: "Selempang Biru Langit",   description: "Selempang wisuda warna biru langit cerah modern",         price: "Rp 70.000", color: "#42a5f5", imageAlt: "Selempang wisuda warna biru langit" },
+        { id: "sash-003", name: "Selempang Emas Prestige", description: "Selempang wisuda warna emas mewah dan berkilau",           price: "Rp 85.000", color: "#ffd700", imageAlt: "Selempang wisuda warna emas" },
+        { id: "sash-004", name: "Selempang Merah Berani",  description: "Selempang wisuda warna merah tegas dan percaya diri",     price: "Rp 72.000", color: "#c62828", imageAlt: "Selempang wisuda warna merah" },
+        { id: "sash-005", name: "Selempang Biru Navy",     description: "Selempang wisuda warna navy klasik dan formal",           price: "Rp 78.000", color: "#1565c0", imageAlt: "Selempang wisuda warna biru navy" },
+        { id: "sash-006", name: "Selempang Putih Suci",    description: "Selempang wisuda warna putih bersih dan anggun",          price: "Rp 68.000", color: "#f5f5f5", imageAlt: "Selempang wisuda warna putih" }
+      ];
+
+      // =========================================================
+      // PRODUCT CARD RENDERER — Requirements 4.3, 6.2
+      // =========================================================
+      /**
+       * Renders an HTML string for a single product card.
+       * @param {{id:string, name:string, description:string, price:string, color:string, imageAlt:string}} product
+       * @returns {string} HTML string for an <article class="product-card">
+       */
+      function renderProductCard(product) {
+        // Choose a contrasting foreground colour for the star icon inside the preview
+        var isLight = product.color === '#ffd700' || product.color === '#f5f5f5';
+        var starColor = isLight ? '#424242' : 'rgba(255,255,255,0.75)';
+
+        return (
+          '<article class="product-card">' +
+            '<div' +
+            '  class="product-sash-preview"' +
+            '  role="img"' +
+            '  aria-label="' + product.imageAlt + '"' +
+            '  style="background-color:' + product.color + ';"' +
+            '>' +
+              '<svg' +
+              '  width="48" height="48"' +
+              '  viewBox="0 0 48 48"' +
+              '  xmlns="http://www.w3.org/2000/svg"' +
+              '  aria-hidden="true"' +
+              '  focusable="false"' +
+              '>' +
+                '<text' +
+                '  x="24" y="24"' +
+                '  text-anchor="middle"' +
+                '  dominant-baseline="middle"' +
+                '  font-size="36"' +
+                '  fill="' + starColor + '"' +
+                '>★</text>' +
+              '</svg>' +
+            '</div>' +
+            '<h3>' + product.name + '</h3>' +
+            '<p>' + product.description + '</p>' +
+            '<p class="product-price">' + product.price + '</p>' +
+            '<button' +
+            '  class="btn-order"' +
+            '  type="button"' +
+            '  onclick="scrollToSection(\'contact\')"' +
+            '>Pesan</button>' +
+          '</article>'
+        );
+      }
+
+      // =========================================================
+      // PRODUCT GALLERY RENDERER — Requirements 4.1, 4.3
+      // =========================================================
+      /**
+       * Populates the #products section with all product cards.
+       */
+      function renderProductGallery() {
+        var section = document.getElementById('products');
+        if (!section) return;
+
+        var cardsHTML = PRODUCTS.map(renderProductCard).join('');
+
+        section.innerHTML =
+          '<div class="container">' +
+            '<h2 id="products-title">Koleksi Selempang</h2>' +
+            '<div class="products-grid">' +
+              cardsHTML +
+            '</div>' +
+          '</div>';
+      }
+
+      // =========================================================
+      // HAMBURGER MENU — Task 2.2 (Requirements 1.5, 6.5)
+      // =========================================================
+      document.addEventListener('DOMContentLoaded', function () {
+        // Render product gallery — Task 7.1 (Requirements 4.1, 4.2, 4.3, 6.2)
+        renderProductGallery();
+
+        // Footer year — Requirements 5.3
+        const yearEl = document.getElementById('footer-year');
+        if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear() + ' Selempang Wisuda Premium. All rights reserved.';
+
+        // --- ColorAnimator wiring — Task 4.1 (Requirements 3.1–3.6) ---
+        const sashEl = document.getElementById('sash-display');
+        if (sashEl) {
+          colorAnimator.init(sashEl);
+          sashEl.addEventListener('mouseenter', () => colorAnimator.pause());
+          sashEl.addEventListener('mouseleave', () => colorAnimator.resume());
+        }
+        document.addEventListener('visibilitychange', function() {
+          if (!sashEl) return;
+          if (document.hidden) {
+            colorAnimator.destroy();
+          } else {
+            colorAnimator.resume();
+          }
+        });
+
+        // --- MotionAnimator wiring — Task 5.1 (Requirements 2.1–2.5) ---
+        if (sashEl) {
+          motionAnimator.init(sashEl);
+
+          // Keyboard accessibility: trigger swing on Enter or Space (Task 10)
+          sashEl.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault(); // prevent page scroll on Space
+              motionAnimator.triggerSwing();
+            }
+          });
+        }
+
+        var toggle = document.querySelector('.nav-toggle');
+        var menu   = document.getElementById('nav-menu');
+
+        if (!toggle || !menu) return;
+
+        /** Open/close the mobile nav menu */
+        function setMenuOpen(open) {
+          if (open) {
+            menu.classList.add('is-open');
+            toggle.setAttribute('aria-expanded', 'true');
+            toggle.textContent = '✕';
+          } else {
+            menu.classList.remove('is-open');
+            toggle.setAttribute('aria-expanded', 'false');
+            toggle.textContent = '☰';
+          }
+        }
+
+        // 1. Toggle on hamburger click
+        toggle.addEventListener('click', function () {
+          var isOpen = menu.classList.contains('is-open');
+          setMenuOpen(!isOpen);
+        });
+
+        // 2. Close when any nav link is clicked (mobile UX)
+        menu.querySelectorAll('a').forEach(function (link) {
+          link.addEventListener('click', function () {
+            setMenuOpen(false);
+          });
+        });
+
+        // 3. Close when clicking outside the header
+        document.addEventListener('click', function (event) {
+          var header = document.getElementById('header');
+          if (header && !header.contains(event.target)) {
+            setMenuOpen(false);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
